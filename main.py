@@ -3,9 +3,17 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWebEngineWidgets import *
 
+from configparser import ConfigParser
+
 
 class MarcWebBrowser(QMainWindow):
-    
+    config = ConfigParser()
+    config["Settings"] = {
+        "default_website": "http://www.google.com"
+    }
+    with open('MarcWebBrowserConfig.ini', 'w') as f:
+        config.write(f)
+    config.read("MarcWebBrowserConfig.ini")
     def __init__(self, *args, **kwargs):
         super(MarcWebBrowser, self).__init__(*args, **kwargs)
 
@@ -42,7 +50,7 @@ class MarcWebBrowser(QMainWindow):
 
         self.layout.addLayout(self.horizontal)
         self.layout.addWidget(self.browser)
-
+        # Change string to default url
         self.browser.setUrl(QUrl("https://google.com"))
 
         self.window.setLayout(self.layout)
